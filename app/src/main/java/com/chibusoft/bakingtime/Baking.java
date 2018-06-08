@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * Created by EBELE PC on 6/4/2018.
@@ -15,6 +19,8 @@ public class Baking implements Parcelable{
    public int id;
     @SerializedName("name")
    public String name;
+
+
     @SerializedName("ingredients")
    public ingredients[] myIngredients;
     @SerializedName("steps")
@@ -41,6 +47,10 @@ public class Baking implements Parcelable{
         return myIngredients;
     }
 
+    public ArrayList<ingredients> getMyIngredientsArr() {
+        return new ArrayList<ingredients>(Arrays.asList(myIngredients)) ;
+    }
+
     public void setMyIngredients(ingredients[] myIngredients) {
         this.myIngredients = myIngredients;
     }
@@ -49,81 +59,131 @@ public class Baking implements Parcelable{
         return mySteps;
     }
 
+    public ArrayList<steps> getMyStepsArr() {
+       return new ArrayList<steps>(Arrays.asList(mySteps)) ;
+    }
+
+
     public void setMySteps(steps[] mySteps) {
         this.mySteps = mySteps;
     }
 
-    private class ingredients{
+
+
+    public static class ingredients implements Parcelable{
         @SerializedName("quantity")
-        Double quantity;
+        float quantity;
         @SerializedName("measure")
         String measure;
         @SerializedName("ingredient")
         String ingredient;
+
+        private ingredients(Parcel in){
+            quantity = in.readFloat();
+            measure = in.readString();
+            ingredient = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeFloat(quantity);
+            parcel.writeString(measure);
+            parcel.writeString(ingredient);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public final static Parcelable.Creator<ingredients> CREATOR = new Parcelable.Creator<ingredients>() {
+            @Override
+            public ingredients createFromParcel(Parcel parcel) {
+                return new ingredients(parcel);
+            }
+
+            @Override
+            public ingredients[] newArray(int i) {
+                return new ingredients[i];
+            }
+
+        };
     }
 
 
-    private class steps {
+    public static class steps implements Parcelable {
         @SerializedName("id")
-        int id;
+         int id;
         @SerializedName("shortDescription")
-        String shortDescription;
+         String shortDescription;
         @SerializedName("description")
-        String description;
+         String description;
         @SerializedName("videoURL")
-        String videoURL;
+         String videoURL;
         @SerializedName("thumbnailURL")
-        String thumbnailURL;
+         String thumbnailURL;
+
+        private steps(Parcel in){
+            id = in.readInt();
+            shortDescription = in.readString();
+            description = in.readString();
+            videoURL = in.readString();
+            thumbnailURL = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeInt(id);
+            parcel.writeString(shortDescription);
+            parcel.writeString(description);
+            parcel.writeString(videoURL);
+            parcel.writeString(thumbnailURL);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public final static Parcelable.Creator<steps> CREATOR = new Parcelable.Creator<steps>() {
+            @Override
+            public steps createFromParcel(Parcel parcel) {
+                return new steps(parcel);
+            }
+
+            @Override
+            public steps[] newArray(int i) {
+                return new steps[i];
+            }
+
+        };
     }
 
     private Baking(Parcel in){
 
         id = in.readInt();
         name = in.readString();
-
-
-        for(int i = 0; i < getMyIngredients().length; i++)
-        {
-            myIngredients[i].quantity = in.readDouble();
-            myIngredients[i].measure = in.readString();
-            myIngredients[i].ingredient = in.readString();
-        }
-
-        for(int i = 0; i < getMySteps().length; i++)
-        {
-            mySteps[i].id = in.readInt();
-            mySteps[i].shortDescription = in.readString();
-            mySteps[i].description = in.readString();
-            mySteps[i].videoURL = in.readString();
-            mySteps[i].thumbnailURL = in.readString();
-        }
+        //Reading parcel inner class
+        myIngredients = (ingredients[]) in.readParcelableArray(ingredients.class.getClassLoader());
+        mySteps = (steps[]) in.readParcelableArray(steps.class.getClassLoader());
+        //write just 1 item
+        //mySteps = in.readParcelable(steps.class.getClassLoader());
+        //<ContactInfo> ciArr = (List) i.getParcelableArrayListExtra("contact");
 
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int flag) {
         parcel.writeInt(id);
         parcel.writeString(name);
-
-        for(int j = 0; j < getMyIngredients().length; j++)
-        {
-            parcel.writeDouble(myIngredients[j].quantity);
-            parcel.writeString(myIngredients[j].measure);
-            parcel.writeString(myIngredients[j].ingredient);
-        }
-
-        for(int j = 0; j < getMySteps().length; j++)
-        {
-            parcel.writeInt(mySteps[j].id);
-            parcel.writeString(mySteps[i].shortDescription);
-            parcel.writeString(mySteps[i].description);
-            parcel.writeString(mySteps[i].videoURL);
-            parcel.writeString(mySteps[i].thumbnailURL);
-
-        }
+        //Write in Parcel inner class
+        parcel.writeParcelableArray(myIngredients, flag);
+        parcel.writeParcelableArray(mySteps, flag);
+        //if it was just a class not an array
+        // parcel.writeParcelable(mInnerClass, flags);
     }
 
-    public final Parcelable.Creator<Baking> CREATOR = new Parcelable.Creator<Baking>() {
+    public final static Parcelable.Creator<Baking> CREATOR = new Parcelable.Creator<Baking>() {
         @Override
         public Baking createFromParcel(Parcel parcel) {
             return new Baking(parcel);

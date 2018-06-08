@@ -1,5 +1,7 @@
 package com.chibusoft.bakingtime;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,9 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.chibusoft.bakingtime.Baking.steps;
+import com.chibusoft.bakingtime.BakingAdapter.ListItemClickListener;
 import com.chibusoft.bakingtime.Network.GetDataService;
 import com.chibusoft.bakingtime.Network.RetrofitClientInstance;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,6 +26,10 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
     private RecyclerView mBaking_RV;
     private BakingAdapter bakingAdapter;
+    private List<Baking> BakingList;
+
+    public static final String EXTRA_STEPS = "Steps";
+    public static final String EXTRA_INGREDIENTS = "ingredients";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,25 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
 
     }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState == null || !savedInstanceState.containsKey("Bake")) {
+            loadData();
+        }
+        else {
+            BakingList = savedInstanceState.getParcelableArrayList("Bake");
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("Bake", (ArrayList)BakingList);
+        super.onSaveInstanceState(outState);
+    }
+
 
 
     public void loadData()
@@ -53,12 +82,15 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
 
     private void generateDataList(List<Baking> baking) {
+
+        BakingList = baking;
         mBaking_RV = (RecyclerView) findViewById(R.id.rv_baking);
-        bakingAdapter = new BakingAdapter(this,baking,this);
+        bakingAdapter = new BakingAdapter(baking,this);
 
         boolean isPhone = getResources().getBoolean(R.bool.is_phone);
+        boolean isPort = getResources().getBoolean(R.bool.is_port);
 
-        if (isPhone) {
+        if (isPhone && isPort) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             mBaking_RV.setLayoutManager(layoutManager);
        } else {
@@ -72,8 +104,13 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex)
+    public void onListItemClick(int index)
     {
+        List<Baking.steps> my = BakingList.get(index).getMyStepsArr();
        //use this to open intent for next page
+        Intent intent = new Intent(this , details.class);
+        intent.putParcelableArrayListExtra(EXTRA_STEPS,  BakingList.get(index).getMyStepsArr());
+        intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS,  BakingList.get(index).getMyIngredientsArr());
+        startActivity(intent);
     }
 }

@@ -25,8 +25,6 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
 
     private List<Baking> bakingItems;
 
-    private Context mContext;
-
     private final ListItemClickListener mOnCLickListener;
 
     public interface ListItemClickListener{
@@ -36,9 +34,8 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
     }
 
 
-    public BakingAdapter(Context context, List<Baking> bakeItems, ListItemClickListener listener) {
+    public BakingAdapter(List<Baking> bakeItems, ListItemClickListener listener) {
         bakingItems = bakeItems;
-        mContext = context;
         mOnCLickListener = listener;
     }
 
@@ -78,7 +75,6 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
         public BakeViewHolder(View itemView) {
             super(itemView);
 
-            //Here we set the items in the number_list_item we created eariler
             //This will also cache the view items
             bake_image = (ImageView) itemView.findViewById(R.id.bake_img);
             bake_text = (TextView) itemView.findViewById(R.id.bake_text);
@@ -86,7 +82,6 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
         }
 
         void bind(int index) {
-            //Set iconView from picasso
             bake_text.setText(bakingItems.get(index).getName());
 
             if(index == 0) bake_image.setImageResource(R.drawable.nutella);

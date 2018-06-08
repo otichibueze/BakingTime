@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BaseTextStyle">
+
+    </style>
+
+    <style name="FragmentLayoutStyle">
+
+
+    </style>
+
 </resources>
