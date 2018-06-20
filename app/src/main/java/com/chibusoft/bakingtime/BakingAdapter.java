@@ -14,12 +14,18 @@ import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import java.util.List;
 
 
 public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHolder> {
+    @BindView(R.id.bake_img)
+    ImageView bake_image;
+    @BindView(R.id.bake_text)
+    TextView bake_text;
+
 
     // private static final String TAG = BakingAdapter.class.getSimpleName();
 
@@ -50,6 +56,8 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
         BakeViewHolder viewHolder = new BakeViewHolder(view);
 
+        ButterKnife.bind(this, view);
+
         return viewHolder;
     }
 
@@ -68,16 +76,16 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
     }
 
     class BakeViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-        ImageView bake_image;
-        TextView bake_text;
+       // ImageView bake_image;
+       // TextView bake_text;
 
 
         public BakeViewHolder(View itemView) {
             super(itemView);
 
             //This will also cache the view items
-            bake_image = (ImageView) itemView.findViewById(R.id.bake_img);
-            bake_text = (TextView) itemView.findViewById(R.id.bake_text);
+           // bake_image = (ImageView) itemView.findViewById(R.id.bake_img);
+           // bake_text = (TextView) itemView.findViewById(R.id.bake_text);
             itemView.setOnClickListener(this);
         }
 

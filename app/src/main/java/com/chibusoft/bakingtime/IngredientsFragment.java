@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chibusoft.bakingtime.Baking.steps;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +22,19 @@ import java.util.List;
  */
 
 public class IngredientsFragment extends Fragment {
+    @BindView(R.id.rv_ingredients)
+    RecyclerView mBakingIngredient_RV;
 
     public static final String SAVED_INGREDIENTS = "bake_ingredient";
 
-    private RecyclerView mBakingIngredient_RV;
 
     private IngredientsAdapter ingredientsAdapter;
     private List<Baking.ingredients> mIngredientList;
+    public boolean recyclefocus = false;
 
     public IngredientsFragment(){}
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,11 +49,13 @@ public class IngredientsFragment extends Fragment {
         // Inflate the Android-Me fragment layout
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
 
-        //  ingredient = (TextView) rootView.findViewById(R.id.ingredient_text);
+        ButterKnife.bind(this, rootView);
 
-        mBakingIngredient_RV = (RecyclerView) rootView.findViewById(R.id.rv_ingredients);
+
+        //mBakingIngredient_RV = (RecyclerView) rootView.findViewById(R.id.rv_ingredients);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mBakingIngredient_RV.setLayoutManager(layoutManager);
+        mBakingIngredient_RV.setFocusable(recyclefocus);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mBakingIngredient_RV.getContext(),
                 layoutManager.getOrientation());
@@ -66,6 +75,11 @@ public class IngredientsFragment extends Fragment {
         mIngredientList = ingredients;
         ingredientsAdapter = new IngredientsAdapter(mIngredientList);
     }
+
+    public void setFocus() {
+       recyclefocus = true;
+    }
+
 
 
 

@@ -6,8 +6,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 
 /**
  * Created by EBELE PC on 6/4/2018.
