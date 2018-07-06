@@ -40,3 +40,8 @@ public class RecyclerViewItemCountAssertion implements ViewAssertion {
         assertThat(adapter.getItemCount(), matcher);
     }
 }
+
+//Usage
+////Confirm Recycler view item count with RecyclerViewItemCountAssertion
+//import static com.chibusoft.bakingtime.RecyclerViewItemCountAssertion.withItemCount;
+//onView(withId(R.id.rv_baking)).check(withItemCount(4));

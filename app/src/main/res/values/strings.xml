@@ -12,5 +12,9 @@
     <string name="appwidget_text">Bake Ingredients</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+    <string name="preference" translatable="false">mypreference</string>
+    <string name="contentSaved" translatable="false">Content_Saved</string>
+    <string name="empty_text_view">The view is empty load main app first</string>
+
 
 </resources>

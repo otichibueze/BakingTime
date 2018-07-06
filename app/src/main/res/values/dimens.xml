@@ -12,4 +12,9 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="spinner_width">48dp</dimen>
     <dimen name="spinner_hieght">48dp</dimen>
     <dimen name="exoplayer_height">300dp</dimen>
+    <dimen name="widget_button_width">32dp</dimen>
+    <dimen name="widget_back_height">32dp</dimen>
+    <dimen name="widget_home_height">32dp</dimen>
+    <dimen name="widget_home_padding">8dp</dimen>
+    <dimen name="ingredient_widget_rel_height">28dp</dimen>
 </resources>

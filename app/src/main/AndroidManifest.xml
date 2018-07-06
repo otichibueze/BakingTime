@@ -3,6 +3,9 @@
     package="com.chibusoft.bakingtime">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+
 
     <application
         android:allowBackup="true"
@@ -11,6 +14,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <receiver android:name=".widget.Bake_widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/bake__ingredients_widget_info" />
+            <!--this is where we set reference to widget xml info that contains info on start up remoteView layout and others-->
+        </receiver>
+
+        <service
+            android:name=".widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name=".widget.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
@@ -28,32 +52,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity
-            android:name=".info"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:label="@string/app_name">
-            >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".details" />
-        </activity>
 
 
-        <receiver android:name=".widget.Bake_Ingredients_widget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/bake__ingredients_widget_info" />
-        </receiver>
 
-        <activity android:name=".widget.Bake_Ingredients_widgetConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
+
+        <provider
+            android:name="com.chibusoft.bakingtime.Data.provider.RecipeProvider"
+            android:authorities="com.chibusoft.bakingtime.Data.provider"
+            android:exported="true" />
     </application>
 
 </manifest>

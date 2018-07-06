@@ -8,6 +8,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Created by EBELE PC on 6/20/2018.
+ * This is used to click item inside recycler view
  */
 
 public class MyViewAction {
@@ -33,3 +34,7 @@ public class MyViewAction {
     }
 
 }
+
+//      useage on test class
+//    onView(withId(R.id.rv_conference_list)).perform(
+//        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id. bt_deliver)));

@@ -4,6 +4,7 @@ package com.chibusoft.bakingtime;
  * Created by EBELE PC on 6/17/2018.
  */
 import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.chibusoft.bakingtime.RecyclerViewItemCountAssertion.withItemCount;
 
@@ -19,6 +20,7 @@ import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -28,7 +30,7 @@ import android.view.View;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import static com.chibusoft.bakingtime.RecyclerViewItemCountAssertion.withItemCount;
-//your.package.RecyclerViewItemCountAssertion.withItemCount;
+import com.chibusoft.bakingtime.RecyclerViewAssertions;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -40,7 +42,6 @@ import org.junit.runner.RunWith;
 import timber.log.Timber;
 
 
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class mainActivityTest {
@@ -48,71 +49,90 @@ public class mainActivityTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    private IdlingResource mIdlingResource;
+    private CountingIdlingResource mIdlingResource;
 
     @Before
     public void registerIdlingResource() {
         mIdlingResource = mActivityTestRule.getActivity().getIdlingResource();
         // To prove that the test fails, omit this call:
         IdlingRegistry.getInstance().register(mIdlingResource);
-       // IdlingRegistry.getInstance().register(Espresso  EspressoIdlingResource.getIdlingResource());
-       // Espresso.registerIdlingResources(mIdlingResource);
+    }
+
+    public static RecyclerMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerMatcher(recyclerViewId);
+    }
+
+    public static RecyclerViewAssertions withRecyclerAssertions(final int recyclerViewId) {
+        return new RecyclerViewAssertions();
     }
 
     @Test
     public void retrives_Data()
     {
-       // onView(withId(R.id.rv_baking)).perform()
-       // onView(withId(R.id.rv_baking)).check(withItemCount(3));
-
-//        onView(withId(R.id.recyclerView)).check(new RecyclerViewItemCountAssertion(5));
-//        onView(withId(R.id.recyclerView)).check(new RecyclerViewItemCountAssertion(greaterThan(5));
-//        onView(withId(R.id.recyclerView)).check(new RecyclerViewItemCountAssertion(lessThan(5));
+       //Confirm Recycler view item count with RecyclerViewItemCountAssertion
+        onView(withId(R.id.rv_baking)).check(withItemCount(4));
     }
 
     @Test
-    public void clickItem_onMainActivity()
+    public void recyclerview_posiiton()
     {
+        //Checking that first item retrieved correctly
+         onView(withRecyclerView(R.id.rv_baking).atPositionOnView(0, R.id.bake_text)).check(matches(withText("Nutella Pie")));
+    }
 
-        onView(withId(R.id.rv_baking)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.img_text)));
+    @Test
+    public void steps_display()
+    {
+        //Make click on item , at example at position 1 "Brownies"
+        onView(ViewMatchers.withId(R.id.rv_baking)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
-       // onView(withId(R.id.rv_baking)).perform(click(0,)));
+        //Steps fragment displaced
+        onView(withId(R.id.rv_steps)).check(matches(isDisplayed()));
+    }
 
-        //onView(withId(R.id.img_text)).check(matches(withText("Nutella Pie")));
+    @Test
+    public void each_step_display()
+    {
+        //Make click on item , at example at position 1 "Brownies"
+        onView(ViewMatchers.withId(R.id.rv_baking)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
-        //onData(anything()).inAdapterView(withId(R.id.rv_baking)).atPosition(0).on
+        //Steps fragment displaced
+        onView(withId(R.id.rv_steps)).check(matches(isDisplayed()));
 
-       //onView(withId(R.id.rv_baking)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        //onView(withId(R.id.rv_baking)).check(matches(hasDescendant(withText("Some text"))));
+        //Make click on item , at example at position 1
+        onView(ViewMatchers.withId(R.id.rv_steps)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
-       // onView(nthChildOf(withId(R.id.rv_baking), 0).check(matches(hasDescendant(withText("Some text"))));
+        //Steps fragment displaced
+        onView(withId(R.id.step_description)).check(matches(isDisplayed()));
 
-//        onView(withId(R.id.rv_baking)).perform(
-//                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.)));
-       }
+    }
+
+
+    @Test
+    public void ingredient_display()
+    {
+        //Make click on item , at example at position 1 "Brownies"
+        onView(ViewMatchers.withId(R.id.rv_baking)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        //Steps fragment displayed
+        onView(withId(R.id.rv_steps)).check(matches(isDisplayed()));
+
+        //click on button
+        onView((withId(R.id.ingredient_text))).perform(click());
+
+        //Steps fragment displaced
+        onView(withId(R.id.rv_ingredients)).check(matches(isDisplayed()));
+    }
+
+
+
 
 
     @After
     public void unregisterIdlingResource() {
         if (mIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(mIdlingResource);
-          // Espresso.unregisterIdlingResources(mIdlingResource);
         }
     }
 
-
-    //this is used to get count of items in recycle view
-
-
-//    @Test
-//    public void clickItem_onMainActivity()
-//    {
-//        onView(withId(R.id.rv_baking)).check(matches(hasDescendant(withText("Some text"))));
-//
-//        onView(nthChildOf(withId(R.id.rv_baking), 0).check(matches(hasDescendant(withText("Some text"))));
-//
-//        onView(withId(R.id.rv_baking)).perform(
-//                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.)));
- //   }
 }

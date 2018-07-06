@@ -1,13 +1,23 @@
 package com.chibusoft.bakingtime;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,9 +29,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chibusoft.bakingtime.IdlingResource.SimpleIdlingResource;
+import com.chibusoft.bakingtime.Data.Ingredients_Contract;
+import com.chibusoft.bakingtime.Data.RecipeProvider.Ingredients;
+import com.chibusoft.bakingtime.Data.RecipeProvider.Recipes;
+import com.chibusoft.bakingtime.Data.RecipeProvider.Steps;
+import com.chibusoft.bakingtime.Data.Recipe_Contract;
+import com.chibusoft.bakingtime.Data.RecipeProvider;
+//import com.chibusoft.bakingtime.Data.generated.RecipeProvider;
+import com.chibusoft.bakingtime.Data.Steps_Contract;
 import com.chibusoft.bakingtime.Network.GetDataService;
 import com.chibusoft.bakingtime.Network.RetrofitClientInstance;
+import com.facebook.stetho.Stetho;
+
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -30,6 +49,7 @@ import retrofit2.Response;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements BakingAdapter.ListItemClickListener{
 
@@ -50,15 +70,32 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
     public static final int GRID_WIDTH = 600;
 
+    private SharedPreferences pref;
+    private boolean saved_Content = false;
+
     // The Idling Resource which will be null in production.
     @Nullable
-    private SimpleIdlingResource mIdlingResource;
+    private CountingIdlingResource mIdlingResource= new CountingIdlingResource("Loading_Data");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        //Stetho
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
+
+         pref = this.getSharedPreferences(getString(R.string.preference), MODE_PRIVATE);
+
+        saved_Content = pref.getBoolean(getString(R.string.contentSaved), false);
+
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("Bake")) {
             loadData();
@@ -71,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
         // Get the IdlingResource instance
         getIdlingResource();
+
+       // Timber.d("The main activity code started");
     }
 
 
@@ -84,9 +123,8 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
     public void loadData()
     {
-        if (mIdlingResource != null) {
-            mIdlingResource.setIdleState(false);
-        }
+        mIdlingResource.increment();
+
         mProgress.setVisibility(View.VISIBLE);
           /*Create handle for the RetrofitInstance interface*/
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -96,19 +134,18 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
             public void onResponse(Call<List<Baking>> call, Response<List<Baking>> response) {
                 generateDataList(response.body());
 
-                if (mIdlingResource != null) {
-                    mIdlingResource.setIdleState(true);
-                }
+                mIdlingResource.decrement();
             }
 
             @Override
             public void onFailure(Call<List<Baking>> call, Throwable t) {
                 mProgress.setVisibility(View.GONE);
-                Toast.makeText(MainActivity.this,
-                        "Something went wrong...Please check your network connection!", Toast.LENGTH_SHORT).show();
-                if (mIdlingResource != null) {
-                    mIdlingResource.setIdleState(true);
-                }
+                //Toast.makeText(MainActivity.this,
+                 //       "Something went wrong...Please check your network connection!", Toast.LENGTH_SHORT).show();
+
+                mIdlingResource.decrement();
+
+                ReloadOption();
             }
         });
     }
@@ -118,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
 
         mProgress.setVisibility(View.GONE);
         BakingList = baking;
+        if(!saved_Content) saveToDataBase(); //save the data to database
         bakingAdapter = new BakingAdapter(baking,this);
 
         boolean isPhone = getResources().getBoolean(R.bool.is_phone);
@@ -178,12 +216,132 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
         startActivity(intent);
     }
 
+
+    private void saveToDataBase()
+    {
+        if(BakingList.size() > 0) {
+            ContentValues[] contentValues = new ContentValues[BakingList.size()];
+
+            //This takes in a put string that identifies the kind of data being put and the data
+            for (int i = 0; i < BakingList.size(); i++) {
+                contentValues[i] = new ContentValues();
+                contentValues[i].put(Recipe_Contract.COLUMN_RECIPE_ID, BakingList.get(i).getId());
+                contentValues[i].put(Recipe_Contract.COLUMN_NAME, BakingList.get(i).getName());
+
+
+                Baking.steps[] steps = BakingList.get(i).getMySteps();
+                ContentValues[] cv_steps = new ContentValues[steps.length];
+
+                //This takes in a put string that identifies the kind of data being put and the data
+                for (int k = 0; k < steps.length ; k++) {
+                    cv_steps[k] = new ContentValues();
+                    cv_steps[k].put(Steps_Contract.COLUMN_RECIPE_ID, BakingList.get(i).getId());
+                    cv_steps[k].put(Steps_Contract.COLUMN_SHORT_DESCRIPTION, steps[k].shortDescription);
+                   // if(steps[k].videoURL.length() == 0)steps[k].videoURL = "empty";
+                    cv_steps[k].put(Steps_Contract.COLUMN_VIDEO_URL, steps[k].videoURL);
+                    //if(steps[k].thumbnailURL.length() == 0)steps[k].thumbnailURL = "empty";
+                    cv_steps[k].put(Steps_Contract.COLUMN_THUMBNAIL_URL, steps[k].thumbnailURL);
+                }
+
+                int steps_rows = getContentResolver().bulkInsert(Steps.CONTENT_URI, cv_steps);
+
+
+                Baking.ingredients[] ingredients = BakingList.get(i).getMyIngredients();
+                ContentValues[] cv_ingredients = new ContentValues[ingredients.length];
+
+                //This takes in a put string that identifies the kind of data being put and the data
+                for (int j = 0; j < ingredients.length ; j++) {
+                    cv_ingredients[j] = new ContentValues();
+                    cv_ingredients[j].put(Ingredients_Contract.COLUMN_RECIPE_ID, BakingList.get(i).getId());
+                    cv_ingredients[j].put(Ingredients_Contract.COLUMN_QUANTITY, ingredients[j].quantity);
+                    cv_ingredients[j].put(Ingredients_Contract.COLUMN_MEASURE, ingredients[j].measure);
+                    cv_ingredients[j].put(Ingredients_Contract.COLUMN_INGREDIENT, ingredients[j].ingredient);
+                }
+
+                int ingredient_rows = getContentResolver().bulkInsert(Ingredients.CONTENT_URI, cv_ingredients);
+
+
+
+            }
+
+            int recipe_rows = getContentResolver().bulkInsert(Recipes.CONTENT_URI, contentValues);
+
+            //Test Delete okay
+            //String stringId = "2";
+           // Uri uri = Recipes.CONTENT_URI;
+            //uri = uri.buildUpon().appendPath(stringId).build();
+           // int deleted = getContentResolver().delete(uri,null,null);
+
+
+            //Test Update okay
+            //String stringId = "2"; //based on id not recipe id
+            //ContentValues content = new ContentValues();
+            //content.put(Recipe_Contract.COLUMN_NAME, "Chibusoft");
+            //Uri uri = Recipes.CONTENT_URI;
+            //uri = uri.buildUpon().appendPath(stringId).build();
+            //int update = getContentResolver().update(uri,content,null,null);
+
+            //Selection is used to specify something like where ID equal 1 but passing null will return all
+            //selections
+            //        Example
+            //selection	"id=?" value	selection specifies the criteria for selecting rows.
+            //Selection arguments is used to apply the value in the selection
+            //Example lets say selection was where ID=? now selection arg will have value of 2
+            //searchId = "2"
+            //final String[] SELECTION_ARGS = {
+             //       searchId,
+            //};
+
+
+            Editor editor = pref.edit();
+            saved_Content = true;
+            editor.putBoolean(getString(R.string.contentSaved), saved_Content);
+            editor.commit();
+
+
+        }
+
+    }
+
+
+    //Method isNetworkAvailable
+    private boolean isNetworkAvailable() {
+        // Using ConnectivityManager to check for Network Connection
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
+
+
+    private void ReloadOption() {
+        if (!isNetworkAvailable()) {
+            // Create an Alert Dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Set the Alert Dialog Message
+            builder.setMessage("Internet Connection Required")
+                    .setCancelable(false)
+                    .setPositiveButton("Retry",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int id) {
+
+                                    loadData();
+                                    // Restart the Activity
+                                    //Intent intent = getIntent();
+                                    // finish();
+                                    //startActivity(intent);
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
     @VisibleForTesting
     @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlingResource();
-        }
+    public CountingIdlingResource getIdlingResource() {
         return mIdlingResource;
     }
 
