@@ -8,6 +8,9 @@
     android:orientation="vertical"
     tools:context="com.chibusoft.bakingtime.details">
 
+
+
+
             <FrameLayout
                 android:id="@+id/steps_container"
                 android:layout_width="match_parent"

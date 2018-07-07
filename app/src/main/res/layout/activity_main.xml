@@ -5,14 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/main_margin"
     android:orientation="vertical"
     tools:context="com.chibusoft.bakingtime.MainActivity">
+
+
 
     <ProgressBar
         android:id="@+id/progress_spinner"
         android:layout_width="@dimen/spinner_width"
-        android:layout_height="@dimen/spinner_hieght"
+        android:layout_height="@dimen/spinner_height"
         android:layout_gravity="center"
         android:progressDrawable="@color/colorPrimaryLight"
         />

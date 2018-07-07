@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.telecom.Call.Details;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
@@ -171,11 +173,12 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
 
 
 
+      //  Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+       // setSupportActionBar(myToolbar);
 
+         ActionBar actionBar = this.getSupportActionBar();
+         if(actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ActionBar actionBar = this.getSupportActionBar();
-        //appbar.setExpanded(true,true);
-        if(actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

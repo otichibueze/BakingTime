@@ -15,6 +15,9 @@
     <string name="preference" translatable="false">mypreference</string>
     <string name="contentSaved" translatable="false">Content_Saved</string>
     <string name="empty_text_view">The view is empty load main app first</string>
+    <string name="text_ingredients">INGREDIENTS</string>
+    <string name="line_divider">line divider</string>
+    <string name="ingredient_content_description">image for content</string>
 
 
 </resources>

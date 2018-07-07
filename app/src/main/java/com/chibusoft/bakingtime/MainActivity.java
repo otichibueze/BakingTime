@@ -9,38 +9,26 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.AppBarLayout;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.chibusoft.bakingtime.Data.Ingredients_Contract;
 import com.chibusoft.bakingtime.Data.RecipeProvider.Ingredients;
 import com.chibusoft.bakingtime.Data.RecipeProvider.Recipes;
 import com.chibusoft.bakingtime.Data.RecipeProvider.Steps;
 import com.chibusoft.bakingtime.Data.Recipe_Contract;
-import com.chibusoft.bakingtime.Data.RecipeProvider;
-//import com.chibusoft.bakingtime.Data.generated.RecipeProvider;
 import com.chibusoft.bakingtime.Data.Steps_Contract;
 import com.chibusoft.bakingtime.Network.GetDataService;
 import com.chibusoft.bakingtime.Network.RetrofitClientInstance;
-import com.facebook.stetho.Stetho;
-
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -49,7 +37,7 @@ import retrofit2.Response;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
+
 
 public class MainActivity extends AppCompatActivity implements BakingAdapter.ListItemClickListener{
 
@@ -83,14 +71,7 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //Stetho
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(
-                                Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(
-                                Stetho.defaultInspectorModulesProvider(this))
-                        .build());
+
 
          pref = this.getSharedPreferences(getString(R.string.preference), MODE_PRIVATE);
 
@@ -109,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
         // Get the IdlingResource instance
         getIdlingResource();
 
-       // Timber.d("The main activity code started");
     }
 
 
@@ -140,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
             @Override
             public void onFailure(Call<List<Baking>> call, Throwable t) {
                 mProgress.setVisibility(View.GONE);
-                //Toast.makeText(MainActivity.this,
-                 //       "Something went wrong...Please check your network connection!", Toast.LENGTH_SHORT).show();
 
                 mIdlingResource.decrement();
 

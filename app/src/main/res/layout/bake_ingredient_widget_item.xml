@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        tools:text="Graham Cracker crumbs"
         />
 
     <TextView
@@ -18,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        tools:text="CUP 2"
         />
 
 </LinearLayout>

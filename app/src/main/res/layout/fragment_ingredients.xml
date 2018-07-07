@@ -7,10 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="onClick_Ingredient"
-    card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="5dp"
-    android:layout_margin="5dp"
-    android:layout_marginBottom="5dp"
+    card_view:cardCornerRadius="@dimen/layout_card_corner_raduis"
+    card_view:contentPadding="@dimen/layout_card_space"
+    android:layout_margin="@dimen/layout_card_space"
+    android:layout_marginBottom="@dimen/layout_card_space"
     android:fitsSystemWindows="true"
     >
 

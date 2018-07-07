@@ -18,7 +18,7 @@ tools:context="com.chibusoft.bakingtime.details">
 
     <FrameLayout
         android:id="@+id/steps_details"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
         android:layout_width="@dimen/tablet_width_details"
         android:layout_height="wrap_content"
         android:layout_weight="2"

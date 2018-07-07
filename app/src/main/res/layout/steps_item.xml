@@ -6,8 +6,8 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:minHeight="48dp"
+    android:layout_margin="@dimen/steps_margin"
+    android:minHeight="@dimen/steps_frame_min_height"
     android:background="@drawable/list_item_selector"
     >
 
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="22sp"
+        android:textSize="@dimen/item_text_size"
         tools:text="Recipe Introduction"
         />
 

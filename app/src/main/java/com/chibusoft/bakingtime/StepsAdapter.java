@@ -6,6 +6,7 @@ package com.chibusoft.bakingtime;
 import timber.log.Timber;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHold
     @BindView(R.id.step_text) TextView step_text;
 
     private List<Baking.steps> mStepsList;
+
+   // private int selected_position = RecyclerView.NO_POSITION;
 
     private final ListItemClickListener mOnCLickListener;
 
@@ -56,6 +59,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHold
         // Log.d(TAG, "#" + position);
         Timber.d("#" + position);
         holder.bind(position);
+
+        // Here I am just highlighting the background
+       // holder.itemView.setBackgroundColor(selected_position == position ? R.color.colorPrimaryLight : Color.TRANSPARENT);
     }
 
     @Override
@@ -83,6 +89,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHold
         {
             int clickedPosition = getAdapterPosition();
             mOnCLickListener.onListItemClick(clickedPosition);
+
+
         }
 
     }

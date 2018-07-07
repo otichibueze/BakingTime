@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    android:layout_margin="5dp">
+    android:layout_margin="@dimen/widget_layout_margin">
 
 
     <RelativeLayout
@@ -24,17 +24,17 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:background="@color/colorWhite"
-            android:layout_margin="4dp"
+            android:layout_margin="@dimen/widget_back_button_margin"
             />
 
         <TextView
             android:id="@+id/widget__ingredient_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="@dimen/widget_ingredient_marginleft"
             android:textAlignment="center"
-            android:textSize="16sp"
-            android:text="INGREDIENTS"
+            android:textSize="@dimen/widget_text_title_size"
+            android:text="@string/text_ingredients"
             android:textColor="@color/colorPrimaryLight"
             android:layout_centerVertical="true"
             />
@@ -45,9 +45,9 @@
 
     <ListView
         android:id="@+id/widget_listview"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/widget_layout_margin"
         android:divider="@color/colorPrimaryLight"
-        android:dividerHeight="0.5dp"
+        android:dividerHeight="@dimen/widget_divider_height"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -63,9 +63,8 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="@string/empty_text_view"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            tools:text="The view is empty load main app first"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/widget_text_title_size"
             android:textStyle="bold" />
 
     </RelativeLayout>

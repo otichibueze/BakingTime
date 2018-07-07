@@ -22,7 +22,7 @@
         android:layout_height="@dimen/widget_home_height"
         android:background="@color/colorWhite"
         android:paddingBottom="@dimen/widget_home_padding"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/widget_home_button_margin"
         />
 
     <RelativeLayout
@@ -36,9 +36,8 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="@string/empty_text_view"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            tools:text="The view is empty load main app first"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/widget_text_title_size"
             android:textStyle="bold" />
 
     </RelativeLayout>

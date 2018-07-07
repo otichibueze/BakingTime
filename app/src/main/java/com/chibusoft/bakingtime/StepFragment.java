@@ -119,15 +119,18 @@ public class StepFragment extends Fragment {
             description.setText(mStepList.get(index).description);
         }
 
+        navigationLoad();
 
+        return rootView;
+    }
+
+    private void navigationLoad()
+    {
         if(index == 0) previous_button.setVisibility(View.INVISIBLE);
         if(index > 0) previous_button.setVisibility(View.VISIBLE);
         if(index == mStepList.size() -1) next_button.setVisibility(View.INVISIBLE);
         if(index < mStepList.size() -1 ) next_button.setVisibility(View.VISIBLE);
 
-
-
-        return rootView;
     }
 
     public void shouldPlay()
@@ -165,6 +168,7 @@ public class StepFragment extends Fragment {
         description.setText(mStepList.get(index).description);
         playbackPosition = 0;
         shouldPlay();
+        navigationLoad();
     }
 
     public void loadNext()
@@ -372,19 +376,9 @@ public class StepFragment extends Fragment {
         int currentOrientation = getResources().getConfiguration().orientation;
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-//            params.width=params.MATCH_PARENT;
-//            params.height=params.MATCH_PARENT;
-//            playerView.setLayoutParams(params);
-
             hideSystemUiFullScreen();
         }
         else {
-//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-//            params.width=params.MATCH_PARENT;
-//            params.height=300;
-//            playerView.setLayoutParams(params);
-
             hideSystemUi();
         }
     }

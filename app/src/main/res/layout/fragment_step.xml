@@ -8,10 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="onClick_Ingredient"
-    card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="5dp"
-    android:layout_margin="5dp"
-    android:layout_marginBottom="5dp"
+    card_view:cardCornerRadius="@dimen/layout_card_corner_raduis"
+    card_view:contentPadding="@dimen/layout_card_space"
+    android:layout_margin="@dimen/layout_card_space"
+    android:layout_marginBottom="@dimen/layout_card_space"
     android:fitsSystemWindows="true"
     >
 
@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/step_layout_margin"
     android:keepScreenOn="true"
     android:fitsSystemWindows="true"
     android:fillViewport="true"
@@ -48,11 +48,10 @@
         android:id="@+id/step_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/step_description_margin"
         android:layout_below="@id/video_view"
         android:textAlignment="center"
-        android:textSize="26sp"
-        tools:text="2. Combine the cake flour, 400 grams (2 cups) of sugar, "
+        android:textSize="@dimen/step_description_text_size"
         />
     </LinearLayout>
 
@@ -61,15 +60,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="0"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/step_layout_margin"
             android:orientation="horizontal"
             >
 
             <ImageButton
                 android:id="@+id/previous_btn"
-                android:layout_width="68dp"
-                android:layout_height="68dp"
-                android:layout_margin="5dp"
+                android:layout_width="@dimen/navigation_btn_width"
+                android:layout_height="@dimen/navigation_btn_height"
+                android:layout_margin="@dimen/step_layout_margin"
                 android:background="@null"
                 android:onClick="previous"
                 android:scaleType="centerCrop"
@@ -78,12 +77,12 @@
 
             <ImageButton
                 android:id="@+id/next_btn"
-                android:layout_width="68dp"
-                android:layout_height="68dp"
+                android:layout_width="@dimen/navigation_btn_width"
+                android:layout_height="@dimen/navigation_btn_height"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/previous_btn"
-                android:layout_marginEnd="14dp"
-                android:layout_marginRight="14dp"
+                android:layout_marginEnd="@dimen/navigation_btn_margin_end"
+                android:layout_marginRight="@dimen/navigation_btn_margin_end"
                 android:background="@null"
                 android:onClick="next"
                 android:scaleType="centerCrop"
