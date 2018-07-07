@@ -6,7 +6,6 @@ package com.chibusoft.bakingtime.Data;
 import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.ConflictResolutionType;
 import net.simonvt.schematic.annotation.DataType;
-import net.simonvt.schematic.annotation.DataType.Type;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 

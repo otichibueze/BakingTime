@@ -5,13 +5,8 @@ package com.chibusoft.bakingtime;
  */
 
 import android.content.res.Resources;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.google.common.truth.Truth;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

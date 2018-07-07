@@ -27,5 +27,4 @@ public class Recipe_Contract {
     @NotNull
     public static final String COLUMN_NAME = "name";
 
-
 }

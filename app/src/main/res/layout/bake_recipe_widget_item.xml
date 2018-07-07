@@ -13,7 +13,9 @@
         android:layout_width="@dimen/widget_bake_item_img_width"
         android:layout_height="@dimen/widget_bake_item_img_height"
         android:scaleType="centerCrop"
-        tools:src="@drawable/yellowcake"/>
+        tools:src="@drawable/yellowcake"
+        android:contentDescription="@string/widget_recipe_icon"
+        />
 
     <TextView
         android:id="@+id/recipe_widget_name"

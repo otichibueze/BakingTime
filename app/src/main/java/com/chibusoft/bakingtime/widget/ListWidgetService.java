@@ -10,8 +10,6 @@ import android.widget.RemoteViewsService;
 
 import com.chibusoft.bakingtime.Data.Ingredients_Contract;
 import com.chibusoft.bakingtime.Data.RecipeProvider.Ingredients;
-import com.chibusoft.bakingtime.Data.RecipeProvider.Recipes;
-import com.chibusoft.bakingtime.Data.Recipe_Contract;
 import com.chibusoft.bakingtime.R;
 
 /**

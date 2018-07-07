@@ -1,7 +1,5 @@
 package com.chibusoft.bakingtime;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chibusoft.bakingtime.StepFragment.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +33,9 @@ public class StepsFragment extends Fragment  {
 
     private StepsAdapter mStepsAdapter;
     private List<Baking.steps> mStepList;
-    private TextView ingredient;
+   // private TextView ingredient;
 
-    public static final String INDEX = "index";
+    //public static final String INDEX = "index";
 
     private String title;
     private int img_Resource;

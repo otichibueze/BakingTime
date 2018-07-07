@@ -18,6 +18,11 @@
     <string name="text_ingredients">INGREDIENTS</string>
     <string name="line_divider">line divider</string>
     <string name="ingredient_content_description">image for content</string>
+    <string name="widget_recipe_icon">widget recipe icon</string>
+    <string name="back_button_image">back button image</string>
+    <string name="bake_recipe_icon">bake recipe icon</string>
+    <string name="widget_home_button_icon">widget home button icon</string>
+    <string name="navigation_button_icon">navigation button icon</string>
 
 
 </resources>

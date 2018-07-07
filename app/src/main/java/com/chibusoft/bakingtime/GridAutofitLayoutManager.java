@@ -14,7 +14,7 @@ public class GridAutofitLayoutManager extends GridLayoutManager {
     private int mColumnWidth;
     private boolean mColumnWidthChanged = true;
 
-    public static final int WIDTH = 900; //48
+    private static final int WIDTH = 900; //48
 
     public GridAutofitLayoutManager(Context context, int columnWidth) {
         super(context, 1);
@@ -44,7 +44,7 @@ public class GridAutofitLayoutManager extends GridLayoutManager {
     }
 
 
-    public void setColumnWidth(int newColumnWidth) {
+    private void setColumnWidth(int newColumnWidth) {
         if (newColumnWidth > 0 && newColumnWidth != mColumnWidth) {
             mColumnWidth = newColumnWidth;
             mColumnWidthChanged = true;

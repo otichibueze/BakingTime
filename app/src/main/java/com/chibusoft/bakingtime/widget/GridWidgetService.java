@@ -4,28 +4,17 @@ package com.chibusoft.bakingtime.widget;
  * Created by EBELE PC on 6/25/2018.
  */
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
-
 import com.chibusoft.bakingtime.Data.RecipeProvider.Recipes;
 import com.chibusoft.bakingtime.Data.Recipe_Contract;
 import com.chibusoft.bakingtime.R;
 
-import java.io.Console;
-
-import timber.log.Timber;
 
 /**
  * Created by EBELE PC on 6/25/2018.

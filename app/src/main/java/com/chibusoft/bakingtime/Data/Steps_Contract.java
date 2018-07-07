@@ -11,7 +11,6 @@ import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.DataType.Type;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
-import net.simonvt.schematic.annotation.Unique;
 
 public class Steps_Contract {
 

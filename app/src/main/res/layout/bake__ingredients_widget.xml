@@ -1,8 +1,6 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:layout_margin="@dimen/widget_layout_margin">
@@ -25,6 +23,7 @@
             android:layout_centerVertical="true"
             android:background="@color/colorWhite"
             android:layout_margin="@dimen/widget_back_button_margin"
+            android:contentDescription="@string/back_button_image"
             />
 
         <TextView

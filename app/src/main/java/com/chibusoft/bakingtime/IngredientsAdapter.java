@@ -9,7 +9,6 @@ import timber.log.Timber;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
@@ -36,9 +35,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.ingredient_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         IngredientViewHolder viewHolder = new IngredientViewHolder(view);
 
         ButterKnife.bind(this, view);

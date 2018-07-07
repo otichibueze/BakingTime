@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ingredient_text"
     android:layout_width="match_parent"
@@ -12,8 +10,7 @@
     card_view:contentPadding="@dimen/layout_card_space"
     android:layout_margin="@dimen/layout_card_space"
     android:layout_marginBottom="@dimen/layout_card_space"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
 <ScrollView
     android:layout_width="match_parent"
@@ -72,7 +69,8 @@
                 android:background="@null"
                 android:onClick="previous"
                 android:scaleType="centerCrop"
-                android:src="@drawable/previousbutton" />
+                android:src="@drawable/previousbutton"
+                android:contentDescription="@string/navigation_button_icon" />
 
 
             <ImageButton
@@ -86,7 +84,8 @@
                 android:background="@null"
                 android:onClick="next"
                 android:scaleType="centerCrop"
-                android:src="@drawable/nextbutton" />
+                android:src="@drawable/nextbutton"
+                android:contentDescription="string/navigation_button_icon" />
 
         </RelativeLayout>
 

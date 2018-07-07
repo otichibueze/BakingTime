@@ -1,15 +1,11 @@
 package com.chibusoft.bakingtime.widget;
 
-import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -22,13 +18,13 @@ import com.chibusoft.bakingtime.R;
  */
 public class Bake_widget extends AppWidgetProvider {
 
-    public static final String ACTION_OPEN_LIST = "com.chibusoft.bakingtime.widget.action.open_list";
-    public static final String ACTION_OPEN_GRID = "com.chibusoft.bakingtime.widget.action.open_grid";
+    private static final String ACTION_OPEN_LIST = "com.chibusoft.bakingtime.widget.action.open_list";
+    private static final String ACTION_OPEN_GRID = "com.chibusoft.bakingtime.widget.action.open_grid";
     public static final String EXTRA_RECIPE_ID = "com.chibusoft.bakingtime.widget.extra.RECIPE_ID";
     public static final long DEFAULT = 1;
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,int appWidgetId)
+    {
 
         appWidgetManager = AppWidgetManager.getInstance(context);
 
@@ -136,7 +132,7 @@ public class Bake_widget extends AppWidgetProvider {
         showGridIntent.setAction(ACTION_OPEN_GRID);
         // when registering the “onClick” event (intent) you must add an extra value with the widget ID (appWidgetId)
         //use AppWidgetManager reference to save the widget we choose to update in intent extra
-        showGridIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);;
+        showGridIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         // Widgets creating pending intent
         //pass the id of the widget we choose to update in the second parameter of pending intent method
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, showGridIntent, PendingIntent.FLAG_UPDATE_CURRENT);

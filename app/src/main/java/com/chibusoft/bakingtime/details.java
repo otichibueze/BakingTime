@@ -1,41 +1,22 @@
 package com.chibusoft.bakingtime;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.telecom.Call.Details;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import butterknife.BindView;
+
 import butterknife.ButterKnife;
 
 public class details extends AppCompatActivity implements StepFragment.ClickListener, StepsAdapter.ListItemClickListener{
-//    @BindView(R.id.steps_container)
-//    FrameLayout mystep_container;
-//    @BindView(R.id.steps_details)
-//   FrameLayout mystep_detail;
-
-
 
     private List<Baking.ingredients> ingredients;
 
@@ -45,17 +26,17 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
 
     public static final String VIEW = "view";
     public static final String IS_PHONE = "phone";
-    public static final String IS_PORT = "port";
+    //public static final String IS_PORT = "port";
     public static final String INDEX = "index";
 
     public static final int VIEW_INGREDIENTS = 1;
     public static final int VIEW_STEP = 2;
     public static final int VIEW_STEPS = 3;
 
-    public static final String VIEW_MODE = "view_mode";
-    public int view_mode;
-    public static final int VIEW_SINGLE = 0;
-    public static final int VIEW_DOUBLE = 1;
+    private static final String VIEW_MODE = "view_mode";
+    private int view_mode;
+    private static final int VIEW_SINGLE = 0;
+    private static final int VIEW_DOUBLE = 1;
 
    // private TextView textImage;
     private String title;
@@ -67,7 +48,7 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
 
     private int view_type;
 
-    private boolean isPhone, isPort;
+    private boolean isPhone;// isPort;
 
     private int index;
 
@@ -77,10 +58,10 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
 
-        ingredients = new ArrayList<Baking.ingredients>();
-        steps = new ArrayList<Baking.steps>();
+        ingredients = new ArrayList<>();
+        steps = new ArrayList<>();
         isPhone = getResources().getBoolean(R.bool.is_phone);
-        isPort = getResources().getBoolean(R.bool.is_port);
+       // isPort = getResources().getBoolean(R.bool.is_port);
         index = 0;
 
         if(savedInstanceState != null)
@@ -91,7 +72,7 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
             img_Resource = savedInstanceState.getInt(MainActivity.EXTRA_IMG, 0);
             view_type = savedInstanceState.getInt(VIEW);
             isPhone = savedInstanceState.getBoolean(IS_PHONE);
-            isPort = savedInstanceState.getBoolean(IS_PORT);
+           // isPort = savedInstanceState.getBoolean(IS_PORT);
             index = savedInstanceState.getInt(INDEX);
             view_mode = savedInstanceState.getInt(VIEW_MODE);
 
@@ -110,18 +91,8 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
 
         }
 
-        isPort = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false;
+        //isPort = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false;
 
-
-//        if(!isPhone && isPort)
-//        {
-//            mystep_detail.setVisibility(View.GONE);
-//            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mystep_container.getLayoutParams();
-//            params.width=params.MATCH_PARENT;
-//            params.height=params.MATCH_PARENT;
-//            mystep_container.setLayoutParams(params);
-//            view_mode = VIEW_SINGLE;
-//        }
 
 
             if(!isPhone)
@@ -339,7 +310,7 @@ public class details extends AppCompatActivity implements StepFragment.ClickList
         outState.putInt(MainActivity.EXTRA_IMG,img_Resource);
         outState.putInt(VIEW,view_type);
         outState.putBoolean(IS_PHONE,isPhone);
-        outState.putBoolean(IS_PORT,isPort);
+        //outState.putBoolean(IS_PORT,isPort);
         outState.putInt(INDEX,index);
         outState.putInt(VIEW_MODE,view_mode);
         super.onSaveInstanceState(outState);

@@ -46,7 +46,7 @@ public class Baking implements Parcelable{
     }
 
     public ArrayList<ingredients> getMyIngredientsArr() {
-        return new ArrayList<ingredients>(Arrays.asList(myIngredients)) ;
+        return new ArrayList<>(Arrays.asList(myIngredients)) ;
     }
 
     public void setMyIngredients(ingredients[] myIngredients) {
@@ -58,7 +58,7 @@ public class Baking implements Parcelable{
     }
 
     public ArrayList<steps> getMyStepsArr() {
-       return new ArrayList<steps>(Arrays.asList(mySteps)) ;
+       return new ArrayList<>(Arrays.asList(mySteps)) ;
     }
 
 

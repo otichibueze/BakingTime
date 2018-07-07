@@ -221,8 +221,7 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
                     cv_steps[k].put(Steps_Contract.COLUMN_THUMBNAIL_URL, steps[k].thumbnailURL);
                 }
 
-                int steps_rows = getContentResolver().bulkInsert(Steps.CONTENT_URI, cv_steps);
-
+                //int steps_rows = getContentResolver().bulkInsert(Steps.CONTENT_URI, cv_steps);
 
                 Baking.ingredients[] ingredients = BakingList.get(i).getMyIngredients();
                 ContentValues[] cv_ingredients = new ContentValues[ingredients.length];
@@ -236,46 +235,15 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
                     cv_ingredients[j].put(Ingredients_Contract.COLUMN_INGREDIENT, ingredients[j].ingredient);
                 }
 
-                int ingredient_rows = getContentResolver().bulkInsert(Ingredients.CONTENT_URI, cv_ingredients);
-
-
-
+               // int ingredient_rows = getContentResolver().bulkInsert(Ingredients.CONTENT_URI, cv_ingredients);
             }
 
-            int recipe_rows = getContentResolver().bulkInsert(Recipes.CONTENT_URI, contentValues);
-
-            //Test Delete okay
-            //String stringId = "2";
-           // Uri uri = Recipes.CONTENT_URI;
-            //uri = uri.buildUpon().appendPath(stringId).build();
-           // int deleted = getContentResolver().delete(uri,null,null);
-
-
-            //Test Update okay
-            //String stringId = "2"; //based on id not recipe id
-            //ContentValues content = new ContentValues();
-            //content.put(Recipe_Contract.COLUMN_NAME, "Chibusoft");
-            //Uri uri = Recipes.CONTENT_URI;
-            //uri = uri.buildUpon().appendPath(stringId).build();
-            //int update = getContentResolver().update(uri,content,null,null);
-
-            //Selection is used to specify something like where ID equal 1 but passing null will return all
-            //selections
-            //        Example
-            //selection	"id=?" value	selection specifies the criteria for selecting rows.
-            //Selection arguments is used to apply the value in the selection
-            //Example lets say selection was where ID=? now selection arg will have value of 2
-            //searchId = "2"
-            //final String[] SELECTION_ARGS = {
-             //       searchId,
-            //};
-
+           // int recipe_rows = getContentResolver().bulkInsert(Recipes.CONTENT_URI, contentValues);
 
             Editor editor = pref.edit();
             saved_Content = true;
             editor.putBoolean(getString(R.string.contentSaved), saved_Content);
             editor.commit();
-
 
         }
 
