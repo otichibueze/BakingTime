@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -31,7 +32,8 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -45,6 +47,8 @@ public class StepFragment extends Fragment {
     ImageButton next_button;
     @BindView(R.id.previous_btn)
     ImageButton previous_button;
+    @BindView(R.id.thumbnail_img)
+    ImageView thumbnail_img;
 
     private List<Baking.steps> mStepList;
     private int index;
@@ -60,12 +64,14 @@ public class StepFragment extends Fragment {
     private boolean playWhenReady = true;
 
     boolean loadPlayer = false;
+    //boolean initialize_Exo = false;
 
     private static final String EXTRA_PLAYBACKPOSIITON = "playbackposition";
     private static final String EXTRA_CURRENTWINDOW = "currentwindow";
     private static final String EXTRA_PLAYWHENREADY = "playwhenready";
 
     public String VideoLink;
+
 
 
     // Define a new interface OnImageClickListener that triggers a callback in the host activity
@@ -104,13 +110,44 @@ public class StepFragment extends Fragment {
 
         shouldPlay();
 
-        if(mStepList != null) {
-            description.setText(mStepList.get(index).description);
-        }
+       // if(mStepList != null) {
+        //    description.setText(mStepList.get(index).description);
+
+            setContent();
+       // }
 
         navigationLoad();
 
         return rootView;
+    }
+
+    private void setContent()
+    {
+        if(mStepList != null) {
+            description.setText(mStepList.get(index).description);
+
+
+                if(mStepList.get(index).thumbnailURL.length() > 0) {
+
+                    Picasso.get()
+                            .load(mStepList.get(index).thumbnailURL)
+                            .into(thumbnail_img, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                }
+                                @Override
+                                public void onError(Exception e) {
+                                    thumbnail_img.setVisibility(View.GONE);
+                                }
+                            });
+                }
+                else
+                {
+                    thumbnail_img.setVisibility(View.GONE);
+                }
+            }
+
+
     }
 
     private void navigationLoad()
@@ -124,10 +161,12 @@ public class StepFragment extends Fragment {
 
     public void shouldPlay()
     {
-         VideoLink = mStepList.get(index).videoURL.length() > 0 ?
-                mStepList.get(index).videoURL : mStepList.get(index).thumbnailURL;
+        // VideoLink = mStepList.get(index).videoURL.length() > 0 ?
+         //       mStepList.get(index).videoURL : mStepList.get(index).thumbnailURL;
 
-        loadPlayer = VideoLink.length() > 0; // ? true : false;
+        VideoLink = mStepList.get(index).videoURL;
+
+        loadPlayer = VideoLink.length() > 0;
 
        // if(!loadPlayer) playerView.setVisibility(View.GONE);
         if(!loadPlayer){
@@ -136,8 +175,11 @@ public class StepFragment extends Fragment {
         }
         else
         {
-            playerView.setVisibility(View.VISIBLE);
-            initializePlayer();
+           // if(!initialized_Exo) {
+              // initialized_Exo = true;
+                playerView.setVisibility(View.VISIBLE);
+                initializePlayer();
+           // }
         }
 
 
@@ -164,7 +206,8 @@ public class StepFragment extends Fragment {
     {
 
         if(index < mStepList.size() -1) index++;
-        description.setText(mStepList.get(index).description);
+       // description.setText(mStepList.get(index).description);
+        setContent();
 
         if(index > 0) previous_button.setVisibility(View.VISIBLE);
         if(index == mStepList.size() -1) next_button.setVisibility(View.INVISIBLE);
@@ -176,7 +219,8 @@ public class StepFragment extends Fragment {
     {
 
         if(index > 0) index--;
-        description.setText(mStepList.get(index).description);
+       // description.setText(mStepList.get(index).description);
+        setContent();
 
         if(index < mStepList.size() - 1) next_button.setVisibility(View.VISIBLE);
         if(index == 0) previous_button.setVisibility(View.INVISIBLE);
@@ -205,76 +249,63 @@ public class StepFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(MainActivity.EXTRA_STEPS, (ArrayList) mStepList);
         outState.putInt(EXTRA_INDEX,index);
-        outState.putLong(EXTRA_PLAYBACKPOSIITON,playbackPosition);
-        outState.putInt(EXTRA_CURRENTWINDOW, currentWindow);
-        outState.putBoolean(EXTRA_PLAYWHENREADY, playWhenReady);
+        if(player != null) {
+            outState.putLong(EXTRA_PLAYBACKPOSIITON,  player.getCurrentPosition());
+            outState.putInt(EXTRA_CURRENTWINDOW, player.getCurrentWindowIndex());
+            outState.putBoolean(EXTRA_PLAYWHENREADY,  player.getPlayWhenReady());
+        }
         super.onSaveInstanceState(outState);
     }
 
 
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        if(savedInstanceState != null) {
-//            //mStepList = savedInstanceState.getParcelableArrayList(MainActivity.EXTRA_STEPS);
-//            //index = savedInstanceState.getInt(EXTRA_INDEX,0);
-//            playbackPosition = savedInstanceState.getLong(EXTRA_PLAYBACKPOSIITON,0);
-//            currentWindow = savedInstanceState.getInt(EXTRA_CURRENTWINDOW,0);
-//            playWhenReady = savedInstanceState.getBoolean(EXTRA_PLAYWHENREADY, true);
-//
-//        }
-//
-//    }
-
 
     private void initializePlayer() {
-        if(loadPlayer) {
-            VideoLink = mStepList.get(index).videoURL.length() > 0 ?
-                    mStepList.get(index).videoURL : mStepList.get(index).thumbnailURL;
+            if (loadPlayer) {
+              //  VideoLink = mStepList.get(index).videoURL.length() > 0 ?
+                 //       mStepList.get(index).videoURL : mStepList.get(index).thumbnailURL;
 
-            if (player == null) {
-                // a factory to create an AdaptiveVideoTrackSelection
-                //this is good for the web url stream to choose adaptive video quality
-                //else use  new DefaultTrackSelector(),
-                TrackSelection.Factory adaptiveTrackSelectionFactory =
-                        new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
 
-                player = ExoPlayerFactory.newSimpleInstance(
-                        new DefaultRenderersFactory(getContext()),
-                        new DefaultTrackSelector(adaptiveTrackSelectionFactory),
-                        new DefaultLoadControl());
-                playerView.setPlayer(player);
-            }
+                if (player == null) {
+                    // a factory to create an AdaptiveVideoTrackSelection
+                    //this is good for the web url stream to choose adaptive video quality
+                    //else use  new DefaultTrackSelector(),
+                    TrackSelection.Factory adaptiveTrackSelectionFactory =
+                            new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
 
-            if(playbackPosition != 0) {
+                    player = ExoPlayerFactory.newSimpleInstance(
+                            new DefaultRenderersFactory(getContext()),
+                            new DefaultTrackSelector(adaptiveTrackSelectionFactory),
+                            new DefaultLoadControl());
+                    playerView.setPlayer(player);
+
+                }
+
                 MediaSource mediaSource = buildMediaSource(Uri.parse(VideoLink));
 
-                //this where you state if you want to reset player position and state or not
-                player.prepare(mediaSource, false, true);
-                player.seekTo(playbackPosition);
-                player.setPlayWhenReady(playWhenReady);
-                player.getPlaybackState();
+                if(playbackPosition != 0)
+                {
+                    //this where you state if you want to reset player position and state or not
+                    player.prepare(mediaSource, false, true);
+                    player.seekTo(playbackPosition);
+                    player.setPlayWhenReady(playWhenReady);
+                    player.getPlaybackState();
+                }
+                else {
+
+                    //this where you state if you want to reset player position and state or not
+                    player.prepare(mediaSource, true, false);
+                    player.seekTo(playbackPosition);
+                    player.setPlayWhenReady(playWhenReady);
+                    player.getPlaybackState();
+                }
+
             }
-            else
-            {
-                MediaSource mediaSource = buildMediaSource(Uri.parse(VideoLink));
-
-                //this where you state if you want to reset player position and state or not
-                player.prepare(mediaSource, true, false);
-                player.seekTo(playbackPosition);
-                player.setPlayWhenReady(playWhenReady);
-                player.getPlaybackState();
-            }
-
-
-
-
-
-        }
     }
 
     private void releasePlayer() {
@@ -284,6 +315,8 @@ public class StepFragment extends Fragment {
             playWhenReady = player.getPlayWhenReady();
             player.release();
             player = null;
+           // initialized_Exo = false;
+
         }
     }
 
@@ -311,15 +344,17 @@ public class StepFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23 ) {
-            initializePlayer();
+           // initializePlayer();
+            shouldPlay();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (Util.SDK_INT <= 23 || player == null ) {
-            initializePlayer();
+        if (Util.SDK_INT <= 23 ) {
+            //initializePlayer();
+            shouldPlay();
         }
     }
 

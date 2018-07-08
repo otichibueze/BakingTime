@@ -23,6 +23,7 @@
     <string name="bake_recipe_icon">bake recipe icon</string>
     <string name="widget_home_button_icon">widget home button icon</string>
     <string name="navigation_button_icon">navigation button icon</string>
+    <string name="recipe_image_thumbnail">Recipe image thumbnail</string>
 
 
 </resources>

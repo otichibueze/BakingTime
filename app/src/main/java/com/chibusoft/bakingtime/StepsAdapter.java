@@ -43,9 +43,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHold
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.steps_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         StepViewHolder viewHolder = new StepViewHolder(view);
 
         ButterKnife.bind(this, view);

@@ -29,6 +29,8 @@ import com.chibusoft.bakingtime.Data.Recipe_Contract;
 import com.chibusoft.bakingtime.Data.Steps_Contract;
 import com.chibusoft.bakingtime.Network.GetDataService;
 import com.chibusoft.bakingtime.Network.RetrofitClientInstance;
+//import com.facebook.stetho.Stetho;
+
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -70,6 +72,15 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+//        Stetho.initialize(
+//                Stetho.newInitializerBuilder(this)
+//                        .enableDumpapp(
+//                                Stetho.defaultDumperPluginsProvider(this))
+//                        .enableWebKitInspector(
+//                                Stetho.defaultInspectorModulesProvider(this))
+//                        .build());
 
 
 
@@ -221,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
                     cv_steps[k].put(Steps_Contract.COLUMN_THUMBNAIL_URL, steps[k].thumbnailURL);
                 }
 
-                //int steps_rows = getContentResolver().bulkInsert(Steps.CONTENT_URI, cv_steps);
+                int steps_rows = getContentResolver().bulkInsert(Steps.CONTENT_URI, cv_steps);
 
                 Baking.ingredients[] ingredients = BakingList.get(i).getMyIngredients();
                 ContentValues[] cv_ingredients = new ContentValues[ingredients.length];
@@ -235,10 +246,10 @@ public class MainActivity extends AppCompatActivity implements BakingAdapter.Lis
                     cv_ingredients[j].put(Ingredients_Contract.COLUMN_INGREDIENT, ingredients[j].ingredient);
                 }
 
-               // int ingredient_rows = getContentResolver().bulkInsert(Ingredients.CONTENT_URI, cv_ingredients);
+               int ingredient_rows = getContentResolver().bulkInsert(Ingredients.CONTENT_URI, cv_ingredients);
             }
 
-           // int recipe_rows = getContentResolver().bulkInsert(Recipes.CONTENT_URI, contentValues);
+            int recipe_rows = getContentResolver().bulkInsert(Recipes.CONTENT_URI, contentValues);
 
             Editor editor = pref.edit();
             saved_Content = true;

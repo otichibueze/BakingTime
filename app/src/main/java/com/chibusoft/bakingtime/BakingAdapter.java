@@ -76,21 +76,17 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.BakeViewHo
     }
 
     class BakeViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-       // ImageView bake_image;
-       // TextView bake_text;
 
 
         public BakeViewHolder(View itemView) {
             super(itemView);
 
-            //This will also cache the view items
-           // bake_image = (ImageView) itemView.findViewById(R.id.bake_img);
-           // bake_text = (TextView) itemView.findViewById(R.id.bake_text);
             itemView.setOnClickListener(this);
         }
 
         void bind(int index) {
             bake_text.setText(bakingItems.get(index).getName());
+
 
             if(index == 0) bake_image.setImageResource(R.drawable.nutella);
             else if(index == 1) bake_image.setImageResource(R.drawable.brownies);

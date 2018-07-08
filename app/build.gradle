@@ -71,7 +71,13 @@ dependencies {
     compile 'net.simonvt.schematic:schematic:0.6.3'
 
     //Truth
-    androidTestCompile "com.google.truth:truth:0.40"
+    //androidTestCompile "com.google.truth:truth:0.40"
+
+    //Stetho
+   // compile 'com.facebook.stetho:stetho:1.5.0'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }
