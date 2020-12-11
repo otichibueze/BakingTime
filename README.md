@@ -1,8 +1,6 @@
 # BakingTime
 
-Android Baking App that will allow resident baker-in-chief, Miriam, to share her recipes with the world. 
-You will create an app that will allow a user to select a recipe and see video-guided steps for how to complete it.
-This app has adaptive UI for phone and tablet devices
+Baking App that will allow resident baker-in-chief, Miriam, to share her recipes with the world. You will create an app that will let a user select a recipe and see video-guided steps for how to complete it. This app has adaptive UI for phone and tablet devices
 
 ## Screenshots
 ![alt text](https://github.com/otichibueze/BakingTime/blob/master/screenshots/b.png)
